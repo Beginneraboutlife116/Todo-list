@@ -11,6 +11,7 @@ const port = 3000
 // 正確路徑：mongoose.connect('mongodb://[資料庫帳號]:[資料庫密碼]@[MongoDB位置]:[port]/[資料庫名稱]')
 mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
 
+// 監控connection狀態
 const db = mongoose.connection
 
 db.on('error', () => {
