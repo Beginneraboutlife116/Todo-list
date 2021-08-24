@@ -3,6 +3,9 @@ const express = require('express')
 // include mongoose
 const mongoose = require('mongoose')
 
+//include express handlebars
+const exphbs = require('express-handlebars')
+
 const app = express()
 const port = 3000
 
@@ -22,9 +25,12 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
 // create root route
 app.get('/', (req, res) => {
-  res.send(`<h1>Hello world!!</h1>`)
+  res.render('index')
 })
 
 // set listen
