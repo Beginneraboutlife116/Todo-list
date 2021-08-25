@@ -6,6 +6,9 @@ const mongoose = require('mongoose')
 //include express handlebars
 const exphbs = require('express-handlebars')
 
+// include Todo model
+const Todo = require('./models/todo')
+
 const app = express()
 const port = 3000
 
@@ -30,7 +33,10 @@ app.set('view engine', 'hbs')
 
 // create root route
 app.get('/', (req, res) => {
-  res.render('index')
+  Todo.find() // 取出 Todo Model中所有的資料
+    .lean() // 把 Mongoose的 Model物件轉換成乾淨的 Javascript資料陣列
+    .then(todos => res.render('index', { todos })) // 將資料傳給index.hbs
+    .catch(error => console.error(error)) // 錯誤處理
 })
 
 // set listen
