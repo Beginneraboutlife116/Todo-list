@@ -1,7 +1,7 @@
 // include database connection steps
 const mongoose = require('mongoose')
 
-// include Todo model => 這比較不一樣
+// include Todo model
 const Todo = require('../todo')
 
 mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true})
