@@ -60,6 +60,12 @@ app.post('/todos', (req, res) => {
   return Todo.create({ name }).then(() => res.redirect('/')).catch(error => console.log(error))
 })
 
+// view the detail
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id).lean().then(todo => res.render('detail', { todo }))
+})
+
 // set listen
 app.listen(port, () => {
   console.log(`App is running on http://localhost:${port}`)
