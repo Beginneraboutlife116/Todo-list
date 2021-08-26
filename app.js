@@ -6,6 +6,9 @@ const mongoose = require('mongoose')
 //include express handlebars
 const exphbs = require('express-handlebars')
 
+// include bodyParser
+const bodyParser = require('body-parser')
+
 // include Todo model
 const Todo = require('./models/todo')
 
@@ -31,12 +34,30 @@ db.once('open', () => {
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
+// 讓每個request都經過bodyParser
+// app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
+
 // create root route
 app.get('/', (req, res) => {
   Todo.find() // 取出 Todo Model中所有的資料
     .lean() // 把 Mongoose的 Model物件轉換成乾淨的 Javascript資料陣列
     .then(todos => res.render('index', { todos })) // 將資料傳給index.hbs
     .catch(error => console.error(error)) // 錯誤處理
+})
+
+// create /todos/new
+app.get('/todos/new', (req, res) => {
+  res.render('new')
+})
+
+// 接收 form傳回來的post
+app.post('/todos', (req, res) => {
+  const name = req.body.name
+  // const todo = new Todo({ name })
+  // return todo.save().then(() => res.redirect('/')).catch(error => console.log(error))
+
+  return Todo.create({ name }).then(() => res.redirect('/')).catch(error => console.log(error))
 })
 
 // set listen
